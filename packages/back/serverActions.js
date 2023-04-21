@@ -3,7 +3,7 @@ import { findBestHand,compareHands } from "shared/handsComparator.js";
 import { makeHand } from "shared/handMaker.js";
 
 let game;
-let seats = [...Array(4)]
+let seats = [...Array(5)]
 
 let onConnect = (socket) => {
   console.log("connexion de ", socket.id);
@@ -24,9 +24,9 @@ let onConnect = (socket) => {
 
     // console.log("game", game, game.players.length);
     const readyPlayers = seats.filter((s) => s != undefined)
-    console.log("rdy",readyPlayers);
-    if (readyPlayers.length > 2) {
-      console.log("game",game);
+    //console.log("rdy",readyPlayers);
+    if (readyPlayers.length > 1) {
+      //console.log("game",game);
       if (!game || !game.started) {
 
         console.log("deal...");

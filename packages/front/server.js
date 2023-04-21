@@ -19,10 +19,10 @@ function createServer(scene) {
     server.on("listSeats", (freeSeats) => {
         console.log("list seats",freeSeats);
         let name = server.id
-        // if(localStorage.getItem('name')){
-        //     name = localStorage.getItem('name')
-        // }
-        // localStorage.setItem('name',name)
+        if(localStorage.getItem('name')){
+            name = localStorage.getItem('name')
+        }
+        localStorage.setItem('name',name)
         
         console.log("nom:",name);
         let seat = freeSeats[Math.floor(Math.random() * freeSeats.length)]

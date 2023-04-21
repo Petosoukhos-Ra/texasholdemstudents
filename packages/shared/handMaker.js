@@ -31,23 +31,72 @@ function byRank(c1, c2) {
 }
 
 function isQuad(counts) {
-    return false
-}
+    // parcours des valeurs dans l'objet counts
+    for (let value in counts) {
+      // si une valeur est présente quatre fois, c'est un carré
+      if (counts[value] === 4) {
+        return true;
+      }
+    }
+    // aucune valeur n'a été trouvée quatre fois
+    return false;
+  }
 
-function isFullHouse(counts) {
-    return false
-}
+  function isFullHouse(counts) {
+    let foundThreeOfAKind = false;
+    let foundPair = false;
+  
+    // parcours des valeurs dans l'objet counts
+    for (let value in counts) {
+      // si une valeur est présente trois fois, c'est un brelan
+      if (counts[value] === 3) {
+        foundThreeOfAKind = true;
+      }
+      // si une valeur est présente deux fois, c'est une paire
+      if (counts[value] === 2) {
+        foundPair = true;
+      }
+    }
+    // un full se compose d'un brelan et d'une paire
+    return foundThreeOfAKind && foundPair;
+  }
 
-function isThreeOfAKind(counts) {
-    return false
-}
+  function isThreeOfAKind(counts) {
+    // parcours des valeurs dans l'objet counts
+    for (let value in counts) {
+      // si une valeur est présente trois fois, c'est un brelan
+      if (counts[value] === 3) {
+        return true;
+      }
+    }
+    // aucune valeur n'a été trouvée trois fois
+    return false;
+  }
 
-function isDoublePair(counts) {
-    return false
-}
+  function isDoublePair(counts) {
+    let foundPairs = 0;
+  
+    // parcours des valeurs dans l'objet counts
+    for (let value in counts) {
+      // si une valeur est présente deux fois, c'est une paire
+      if (counts[value] === 2) {
+        foundPairs++;
+      }
+    }
+    // un double paire se compose de deux paires
+    return foundPairs === 2;
+  }
 
-function isPair(counts) {
-    return false
-}
+  function isPair(counts) {
+    // parcours des valeurs dans l'objet counts
+    for (let value in counts) {
+      // si une valeur est présente deux fois, c'est une paire
+      if (counts[value] === 2) {
+        return true;
+      }
+    }
+    // aucune valeur n'a été trouvée deux fois
+    return false;
+  }
 
 export { makeHand,byRank}

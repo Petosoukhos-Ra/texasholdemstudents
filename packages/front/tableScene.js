@@ -14,6 +14,7 @@ class PokerTable extends Phaser.Scene {
     betButton
     foldButton
 
+
     constructor() {
         super("PokerTable");
         // console.log(this.server);
@@ -29,8 +30,9 @@ class PokerTable extends Phaser.Scene {
         seats[2] = { x: 250, y: 230, cardsSprites: [] }
         seats[3] = { x: 660, y: 230, cardsSprites: [] }
         seats[4] = { x: 660, y: 550, cardsSprites: [] }
-        /*
+        
         seats[5] = { x: 710, y: 230, cardsSprites: [] }
+        /*
         seats[6] = { x: 850, y: 280, cardsSprites: [] }
 
         seats[7] = { x: 800, y: 450, cardsSprites: [] }
@@ -55,18 +57,21 @@ class PokerTable extends Phaser.Scene {
     }
     buildPlayingButtons() {
         console.log(this);
-        this.betButton = this.add.text(-100, -100, 'Miser', { fontSize: '50px', backgroundColor: '#ddd', color: '#000' });
+        this.betButton = this.add.text(-100, -100, 'Miser', { fontSize: '50px',  color: 'green' });
         this.betButton.setInteractive({ useHandCursor: true });
         this.betButton.on('pointerdown', () => {
             console.log('mise...');
             this.server.emit("bet", { seat: this.player.seat, amount: 100 });
             this.hidePlayingButtons()
+            this.sound.play("fintour");
         });
-        this.foldButton = this.add.text(-100, -100, 'Passer', { fontSize: '50px', backgroundColor: '#ddd', color: '#000' });
+        this.foldButton = this.add.text(-100, -100, 'Passer', { fontSize: '50px',  color: 'red' });
         this.foldButton.setInteractive({ useHandCursor: true });
         this.foldButton.on('pointerdown', () => {
             console.log('passer...');
             this.server.emit("fold", this.player.seat);
+            this.hidePlayingButtons()
+            this.sound.play("fintour");
         });
     }
     preload() {
@@ -76,16 +81,25 @@ class PokerTable extends Phaser.Scene {
             frameWidth: cardParams.width,
             frameHeight: cardParams.height
         });
-        this.load.image('tabouret','assets/tabouret_poker.png')
-        this.load.image('tablepoker','assets/table_poker.png')
+        this.load.image('tabouret','assets/tabouret_pokerSurbri.png')
+        this.load.image('tablepoker2','assets/table_poker2.png')
+        this.load.image('fond','assets/fond.jpg')
+        this.load.image('croupier','assets/croupi.png')
+        this.load.audio("card", "./assets/flipcard-91468.mp3");
+        this.load.audio("fintour", "./assets/fintour.mp3");
     }
     create() {
-        
-        var table = this.add.image(490,410,'tablepoker')
+        var fond = this.add.image(510,380,'fond')
+        fond.setScale(0.57)
+
+        var table = this.add.image(490,410,'tablepoker2')
         table.setScale(1.3)
 
+        var croupier = this.add.image(490,132,'croupier')
+        croupier.setScale(0.5)
+
         //this.add.ellipse(500, 400, 800, 410, '0x8B4513')
-        this.server.emit("listSeats")
+        //this.server.emit("listSeats")
         //this.add.ellipse(500, 400, 740, 360, '0x006400')
 
         var tab1 = this.add.image(690,150,'tabouret')
@@ -156,6 +170,7 @@ class PokerTable extends Phaser.Scene {
         oldCards[1] = card2
     }
     dealOpenCards(seat, cards, isPocketCards) {
+        //this.sound.play("card");
         let scale = cardParams.opponentScale
         if (isPocketCards) {
             scale = cardParams.pocketScale
@@ -200,9 +215,11 @@ class PokerTable extends Phaser.Scene {
     }
 
     dealFlop(flop) {
+        
         let scale = cardParams.opponentScale
         let card1 = this.createCard(flop[0], scale)
         this.flop[0].cardsSprite = card1
+        
         this.dealCard(card1, this.flop[0].x, this.flop[0].y, () => {
             
             let card2 = this.createCard(flop[1], scale)
@@ -210,6 +227,7 @@ class PokerTable extends Phaser.Scene {
             this.dealCard(card2, this.flop[1].x, this.flop[1].y, () => {
                 let card3 = this.createCard(flop[2], scale)
                 this.flop[2].cardsSprite = card3
+                
                 this.dealCard(card3, this.flop[2].x, this.flop[2].y)
         
             })
@@ -230,9 +248,9 @@ class PokerTable extends Phaser.Scene {
     }
 
     showPlayingButtons() {
-        this.betButton.x = 350
-        this.betButton.y = 680
-        this.foldButton.x = 550
+        this.betButton.x = 850
+        this.betButton.y = 580
+        this.foldButton.x = 830
         this.foldButton.y = 680
     }
 /*
